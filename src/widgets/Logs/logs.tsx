@@ -1,13 +1,12 @@
-// Logs.tsx
-
-import React, { useCallback, useState } from "react";
-import { Virtuoso } from "react-virtuoso";
-import { Drawer, Select, Spin, Input } from "antd";
 import {
   InfoCircleOutlined,
   CloseCircleOutlined,
   WarningOutlined,
 } from "@ant-design/icons";
+import { Drawer, Select, Spin, Input } from "antd";
+import React, { useCallback, useState } from "react";
+import { Virtuoso } from "react-virtuoso";
+
 import { Log } from "@/src/@types/types";
 
 const { Option } = Select;
@@ -48,7 +47,6 @@ export const Logs = ({
   logsWithoutAccountId,
   logsWithAccountId,
   log,
-  isLogLoading,
   isLeftLoading,
   isRightLoading,
   setLogId,
@@ -66,7 +64,6 @@ export const Logs = ({
 }: LogsProps) => {
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
 
-  // Handler for clicking a log row
   const handleRowClick = useCallback(
     (logItem: Log) => {
       const isSelected = logItem._id === logId;
@@ -76,18 +73,16 @@ export const Logs = ({
     [logId, setLogId]
   );
 
-  // LogRow component
   const LogRow = React.memo(({ logItem }: { logItem: Log }) => {
     if (!logItem || !logItem._id) return null;
 
-    const isSelected = logItem._id === logId;
     const backgroundColor =
       logItem.level === "info"
-        ? "rgba(30, 136, 229, 0.1)" // Blue for "info"
+        ? "rgba(30, 136, 229, 0.1)"
         : logItem.level === "error"
-          ? "rgba(229, 57, 53, 0.1)" // Red for "error"
+          ? "rgba(229, 57, 53, 0.1)"
           : logItem.level === "warn"
-            ? "rgba(255, 193, 7, 0.1)" // Yellow for "warn"
+            ? "rgba(255, 193, 7, 0.1)"
             : "transparent";
 
     return (
@@ -99,7 +94,7 @@ export const Logs = ({
           padding: "8px 12px",
           cursor: "pointer",
           borderBottom: "1px solid #ddd",
-          height: "50px", // Fixed height for accurate scroll adjustment
+          height: "50px",
         }}
         onClick={() => handleRowClick(logItem)}
       >
@@ -133,20 +128,17 @@ export const Logs = ({
     );
   });
 
-  // Loading indicator component
   const LoadingIndicator = () => (
     <div style={{ textAlign: "center", padding: "20px" }}>
       <Spin tip="Loading..." />
     </div>
   );
 
-  // Close Drawer
   const closeDrawer = () => {
     setIsDrawerVisible(false);
     setLogId(null);
   };
 
-  // Handle filter changes
   const handleLeftFilterChange = (values: string[]) => {
     setLeftLogFilter(values);
   };

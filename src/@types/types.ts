@@ -3,5 +3,5 @@ export interface Log {
   level: "error" | "info";
   message: string;
   metadata: Record<string, unknown>;
-  timestamp: string
+  timestamp: string;
 }

@@ -8,6 +8,7 @@ export const DB = async () => {
   if (!db) {
     while (!db) {
       try {
+        console.log(process.env.DATABASE_URI)
         const client = new MongoClient(String(process.env.DATABASE_URI));
         const connect = await client.connect();
         db = connect.db("winston");

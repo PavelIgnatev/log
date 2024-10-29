@@ -2,7 +2,9 @@
 
 "use server";
 import { ObjectId } from "mongodb";
+
 import { Log } from "../@types/types";
+
 import { DB } from "./db";
 
 const getLogsCollection = async () => {

@@ -1,19 +1,14 @@
 // LogsContainer.tsx
 
 "use client";
-import React, { useState, useEffect, useRef } from "react";
-import {
-  useInfiniteQuery,
-  useQuery,
-  useQueryClient,
-  InfiniteData,
-} from "react-query";
+import React, { useState, useEffect } from "react";
+import { useInfiniteQuery, useQuery, useQueryClient } from "react-query";
 import { toast } from "react-toastify";
 
+import { Log } from "@/src/@types/types";
 import { getLog, getLogs } from "@/src/db/logs";
 
 import { Logs } from "./logs";
-import { Log } from "@/src/@types/types";
 
 const limit = 100;
 
