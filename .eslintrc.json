@@ -56,6 +56,6 @@
       }
     ],
     "complexity": "warn",
-    "no-console": ["error"]
+    "no-console": "off"
   }
 }
