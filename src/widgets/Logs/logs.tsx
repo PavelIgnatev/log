@@ -259,8 +259,8 @@ export const Logs = ({
             style={{ flex: 1 }}
             data={logsWithAccountId.sort(
               (a: any, b: any) =>
-              +new Date(b.metadata.timestamp) - +new Date(a.metadata.timestamp) 
-
+                +new Date(b.metadata.timestamp) -
+                +new Date(a.metadata.timestamp)
             )}
             endReached={loadMoreRightLogs}
             overscan={200}

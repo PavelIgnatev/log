@@ -51,7 +51,7 @@ export const LogsContainer = () => {
           "Произошла ошибка при загрузке логов без accountId. Попробуйте позднее."
         ),
       enabled: true,
-      refetchInterval: leftAtTop ? 5000 : false, // Refetch every 5 seconds only if at top
+      refetchInterval: leftAtTop ? 25000 : false, // Refetch every 5 seconds only if at top
     }
   );
 
@@ -83,7 +83,7 @@ export const LogsContainer = () => {
           "Произошла ошибка при загрузке логов с accountId. Попробуйте позднее."
         ),
       enabled: true,
-      refetchInterval: rightAtTop ? 1000 : false, // Refetch every 5 seconds only if at top
+      refetchInterval: rightAtTop ? 5000 : false, // Refetch every 5 seconds only if at top
     }
   );
 
