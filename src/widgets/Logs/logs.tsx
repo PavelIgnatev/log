@@ -64,6 +64,8 @@ export const Logs = ({
 }: LogsProps) => {
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
 
+  console.log(logsWithAccountId);
+
   const handleRowClick = useCallback(
     (logItem: Log) => {
       const isSelected = logItem._id === logId;
@@ -255,7 +257,11 @@ export const Logs = ({
         >
           <Virtuoso
             style={{ flex: 1 }}
-            data={logsWithAccountId}
+            data={logsWithAccountId.sort(
+              (a: any, b: any) =>
+              +new Date(b.metadata.timestamp) - +new Date(a.metadata.timestamp) 
+
+            )}
             endReached={loadMoreRightLogs}
             overscan={200}
             itemContent={(index, logItem) => <LogRow logItem={logItem} />}
