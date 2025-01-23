@@ -3,10 +3,10 @@ import {
   CloseCircleOutlined,
   WarningOutlined,
 } from "@ant-design/icons";
+import JsonView from "@microlink/react-json-view";
 import { Drawer, Select, Spin, Input } from "antd";
 import React, { useCallback, useState } from "react";
 import { Virtuoso } from "react-virtuoso";
-import JsonView from '@microlink/react-json-view';
 
 import { Log } from "@/src/@types/types";
 
@@ -78,60 +78,62 @@ export const Logs = ({
     [logId, setLogId]
   );
 
-  const LogRow = React.memo(({ logItem, isLeft }: { logItem: Log; isLeft: boolean }) => {
-    if (!logItem || !logItem._id) return null;
+  const LogRow = React.memo(
+    ({ logItem, isLeft }: { logItem: Log; isLeft: boolean }) => {
+      if (!logItem || !logItem._id) return null;
 
-    const backgroundColor =
-      logItem.level === "info"
-        ? "rgba(30, 136, 229, 0.1)"
-        : logItem.level === "error"
-          ? "rgba(229, 57, 53, 0.1)"
-          : logItem.level === "warn"
-            ? "rgba(255, 193, 7, 0.1)"
-            : "transparent";
+      const backgroundColor =
+        logItem.level === "info"
+          ? "rgba(30, 136, 229, 0.1)"
+          : logItem.level === "error"
+            ? "rgba(229, 57, 53, 0.1)"
+            : logItem.level === "warn"
+              ? "rgba(255, 193, 7, 0.1)"
+              : "transparent";
 
-    return (
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          backgroundColor,
-          padding: "8px 12px",
-          cursor: "pointer",
-          borderBottom: "1px solid #ddd",
-          height: "50px",
-        }}
-        onClick={() => handleRowClick(logItem, isLeft)}
-      >
-        <div style={{ width: "30px", textAlign: "center", flexShrink: 0 }}>
-          {logItem.level === "info" ? (
-            <InfoCircleOutlined
-              style={{ color: "#1E88E5", fontSize: "18px" }}
-            />
-          ) : logItem.level === "error" ? (
-            <CloseCircleOutlined
-              style={{ color: "#E53935", fontSize: "18px" }}
-            />
-          ) : logItem.level === "warn" ? (
-            <WarningOutlined style={{ color: "#FFC107", fontSize: "18px" }} />
-          ) : null}
-        </div>
-        <div style={{ flex: 1, padding: "0 10px" }}>{logItem.message}</div>
+      return (
         <div
           style={{
-            width: "130px",
-            textAlign: "right",
-            flexShrink: 0,
-            marginLeft: "auto",
-            fontSize: "12px",
-            color: "#555",
+            display: "flex",
+            alignItems: "center",
+            backgroundColor,
+            padding: "8px 12px",
+            cursor: "pointer",
+            borderBottom: "1px solid #ddd",
+            height: "50px",
           }}
+          onClick={() => handleRowClick(logItem, isLeft)}
         >
-          {formatDate(logItem.timestamp)}
+          <div style={{ width: "30px", textAlign: "center", flexShrink: 0 }}>
+            {logItem.level === "info" ? (
+              <InfoCircleOutlined
+                style={{ color: "#1E88E5", fontSize: "18px" }}
+              />
+            ) : logItem.level === "error" ? (
+              <CloseCircleOutlined
+                style={{ color: "#E53935", fontSize: "18px" }}
+              />
+            ) : logItem.level === "warn" ? (
+              <WarningOutlined style={{ color: "#FFC107", fontSize: "18px" }} />
+            ) : null}
+          </div>
+          <div style={{ flex: 1, padding: "0 10px" }}>{logItem.message}</div>
+          <div
+            style={{
+              width: "130px",
+              textAlign: "right",
+              flexShrink: 0,
+              marginLeft: "auto",
+              fontSize: "12px",
+              color: "#555",
+            }}
+          >
+            {formatDate(logItem.timestamp)}
+          </div>
         </div>
-      </div>
-    );
-  });
+      );
+    }
+  );
 
   const LoadingIndicator = () => (
     <div style={{ textAlign: "center", padding: "20px" }}>
@@ -154,9 +156,9 @@ export const Logs = ({
 
   const getJsonData = useCallback((data: any) => {
     if (!data) return {};
-    
+
     try {
-      return typeof data === 'string' ? JSON.parse(data) : data;
+      return typeof data === "string" ? JSON.parse(data) : data;
     } catch (e) {
       return {};
     }
@@ -248,7 +250,9 @@ export const Logs = ({
             data={logsWithoutAccountId}
             endReached={loadMoreLeftLogs}
             overscan={200}
-            itemContent={(index, logItem) => <LogRow logItem={logItem} isLeft={true} />}
+            itemContent={(index, logItem) => (
+              <LogRow logItem={logItem} isLeft={true} />
+            )}
             components={{
               ...(isLeftLoading && { Footer: LoadingIndicator }),
             }}
@@ -277,7 +281,9 @@ export const Logs = ({
             )}
             endReached={loadMoreRightLogs}
             overscan={200}
-            itemContent={(index, logItem) => <LogRow logItem={logItem} isLeft={false} />}
+            itemContent={(index, logItem) => (
+              <LogRow logItem={logItem} isLeft={false} />
+            )}
             components={{
               ...(isRightLoading && { Footer: LoadingIndicator }),
             }}
@@ -311,8 +317,8 @@ export const Logs = ({
             collapsed={2}
             name={false}
             style={{
-              backgroundColor: 'transparent',
-              fontFamily: 'monospace'
+              backgroundColor: "transparent",
+              fontFamily: "monospace",
             }}
           />
         )}
