@@ -3,14 +3,23 @@ import {
   CloseCircleOutlined,
   WarningOutlined,
 } from "@ant-design/icons";
-import JsonView from "@microlink/react-json-view";
 import { Drawer, Select, Spin, Input } from "antd";
 import React, { useCallback, useState } from "react";
 import { Virtuoso } from "react-virtuoso";
+import dynamic from 'next/dynamic';
 
 import { Log } from "@/src/@types/types";
 
 const { Option } = Select;
+
+const JsonView = dynamic(() => import('@microlink/react-json-view'), {
+  ssr: false,
+  loading: () => (
+    <div style={{ textAlign: "center", padding: "20px" }}>
+      <Spin tip="Loading..." />
+    </div>
+  ),
+});
 
 interface LogsProps {
   logsWithoutAccountId: Log[];
