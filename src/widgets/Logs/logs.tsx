@@ -6,6 +6,7 @@ import {
 import { Drawer, Select, Spin, Input } from "antd";
 import React, { useCallback, useState } from "react";
 import { Virtuoso } from "react-virtuoso";
+import JsonView from '@microlink/react-json-view';
 
 import { Log } from "@/src/@types/types";
 
@@ -63,19 +64,21 @@ export const Logs = ({
   onRightAtTopChange,
 }: LogsProps) => {
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
+  const [isLeftSideClick, setIsLeftSideClick] = useState(false);
 
   console.log(logsWithAccountId);
 
   const handleRowClick = useCallback(
-    (logItem: Log) => {
+    (logItem: Log, isLeft: boolean) => {
       const isSelected = logItem._id === logId;
       setLogId(isSelected ? null : logItem._id);
+      setIsLeftSideClick(isLeft);
       setIsDrawerVisible(!isSelected);
     },
     [logId, setLogId]
   );
 
-  const LogRow = React.memo(({ logItem }: { logItem: Log }) => {
+  const LogRow = React.memo(({ logItem, isLeft }: { logItem: Log; isLeft: boolean }) => {
     if (!logItem || !logItem._id) return null;
 
     const backgroundColor =
@@ -98,7 +101,7 @@ export const Logs = ({
           borderBottom: "1px solid #ddd",
           height: "50px",
         }}
-        onClick={() => handleRowClick(logItem)}
+        onClick={() => handleRowClick(logItem, isLeft)}
       >
         <div style={{ width: "30px", textAlign: "center", flexShrink: 0 }}>
           {logItem.level === "info" ? (
@@ -148,6 +151,16 @@ export const Logs = ({
   const handleRightFilterChange = (values: string[]) => {
     setRightLogFilter(values);
   };
+
+  const getJsonData = useCallback((data: any) => {
+    if (!data) return {};
+    
+    try {
+      return typeof data === 'string' ? JSON.parse(data) : data;
+    } catch (e) {
+      return {};
+    }
+  }, []);
 
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
@@ -235,7 +248,7 @@ export const Logs = ({
             data={logsWithoutAccountId}
             endReached={loadMoreLeftLogs}
             overscan={200}
-            itemContent={(index, logItem) => <LogRow logItem={logItem} />}
+            itemContent={(index, logItem) => <LogRow logItem={logItem} isLeft={true} />}
             components={{
               ...(isLeftLoading && { Footer: LoadingIndicator }),
             }}
@@ -264,7 +277,7 @@ export const Logs = ({
             )}
             endReached={loadMoreRightLogs}
             overscan={200}
-            itemContent={(index, logItem) => <LogRow logItem={logItem} />}
+            itemContent={(index, logItem) => <LogRow logItem={logItem} isLeft={false} />}
             components={{
               ...(isRightLoading && { Footer: LoadingIndicator }),
             }}
@@ -282,13 +295,27 @@ export const Logs = ({
       <Drawer
         title="Log Details"
         placement="right"
-        width={600}
+        width={isLeftSideClick ? 900 : 600}
         onClose={closeDrawer}
         visible={isDrawerVisible}
       >
-        <pre style={{ whiteSpace: "pre-wrap" }}>
-          {JSON.stringify(log?.metadata, null, 2)}
-        </pre>
+        {!log?.metadata ? (
+          <div style={{ textAlign: "center", padding: "20px" }}>
+            <Spin tip="Loading..." />
+          </div>
+        ) : (
+          <JsonView
+            src={getJsonData(log.metadata)}
+            displayDataTypes={false}
+            enableClipboard={true}
+            collapsed={2}
+            name={false}
+            style={{
+              backgroundColor: 'transparent',
+              fontFamily: 'monospace'
+            }}
+          />
+        )}
       </Drawer>
     </div>
   );
