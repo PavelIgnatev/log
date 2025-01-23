@@ -80,7 +80,7 @@ export const LogsContainer = () => {
       staleTime: Infinity,
       onError: () =>
         toast.error(
-          "Произошла ошибка при загрузке логов с accountId. Попробуйте позднее."
+          "Произошла ошибка при загрузке логов с accountId. Попробуйте позднее"
         ),
       enabled: true,
       refetchInterval: rightAtTop ? 5000 : false, // Refetch every 5 seconds only if at top
