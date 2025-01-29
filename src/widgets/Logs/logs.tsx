@@ -4,15 +4,15 @@ import {
   WarningOutlined,
 } from "@ant-design/icons";
 import { Drawer, Select, Spin, Input } from "antd";
+import dynamic from "next/dynamic";
 import React, { useCallback, useState } from "react";
 import { Virtuoso } from "react-virtuoso";
-import dynamic from 'next/dynamic';
 
 import { Log } from "@/src/@types/types";
 
 const { Option } = Select;
 
-const JsonView = dynamic(() => import('@microlink/react-json-view'), {
+const JsonView = dynamic(() => import("@microlink/react-json-view"), {
   ssr: false,
   loading: () => (
     <div style={{ textAlign: "center", padding: "20px" }}>
@@ -283,11 +283,7 @@ export const Logs = ({
         >
           <Virtuoso
             style={{ flex: 1 }}
-            data={logsWithAccountId.sort(
-              (a: any, b: any) =>
-                +new Date(b.metadata.timestamp) -
-                +new Date(a.metadata.timestamp)
-            )}
+            data={logsWithAccountId}
             endReached={loadMoreRightLogs}
             overscan={200}
             itemContent={(index, logItem) => (

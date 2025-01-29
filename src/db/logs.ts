@@ -44,7 +44,6 @@ export const getLogs = async (
           level: 1,
           message: 1,
           "metadata.accountId": 1,
-          "metadata.timestamp": 1,
         },
       })
       ?.sort({ timestamp: -1 }) // Сортировка по дате в убывающем порядке
