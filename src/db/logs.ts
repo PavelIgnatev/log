@@ -8,7 +8,7 @@ import { Log } from "../@types/types";
 import { DB } from "./db";
 
 const getLogsCollection = async () => {
-  return (await DB()).collection("winston");
+  return (await DB()).collection("logs");
 };
 
 export const getLogs = async (
