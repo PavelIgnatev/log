@@ -176,7 +176,7 @@ export const Logs = ({
   // Удаляем дубликаты из массивов логов
   const uniqueLogsWithoutAccountId = React.useMemo(() => {
     const seen = new Set();
-    return logsWithoutAccountId.filter(log => {
+    return logsWithoutAccountId.filter((log) => {
       if (seen.has(log._id)) {
         return false;
       }
@@ -187,13 +187,11 @@ export const Logs = ({
 
   const uniqueLogsWithAccountId = React.useMemo(() => {
     const seen = new Set();
-    return logsWithAccountId.filter(log => {
-      // Создаем уникальный ключ из комбинации _id и accountId
-      const uniqueKey = `${log._id}_${log.accountId}`;
-      if (seen.has(uniqueKey)) {
+    return logsWithAccountId.filter((log) => {
+      if (seen.has(log._id)) {
         return false;
       }
-      seen.add(uniqueKey);
+      seen.add(log._id);
       return true;
     });
   }, [logsWithAccountId]);
