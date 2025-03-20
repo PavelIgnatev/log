@@ -173,6 +173,31 @@ export const Logs = ({
     }
   }, []);
 
+  // Удаляем дубликаты из массивов логов
+  const uniqueLogsWithoutAccountId = React.useMemo(() => {
+    const seen = new Set();
+    return logsWithoutAccountId.filter(log => {
+      if (seen.has(log._id)) {
+        return false;
+      }
+      seen.add(log._id);
+      return true;
+    });
+  }, [logsWithoutAccountId]);
+
+  const uniqueLogsWithAccountId = React.useMemo(() => {
+    const seen = new Set();
+    return logsWithAccountId.filter(log => {
+      // Создаем уникальный ключ из комбинации _id и accountId
+      const uniqueKey = `${log._id}_${log.accountId}`;
+      if (seen.has(uniqueKey)) {
+        return false;
+      }
+      seen.add(uniqueKey);
+      return true;
+    });
+  }, [logsWithAccountId]);
+
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
       <div
@@ -256,7 +281,7 @@ export const Logs = ({
         >
           <Virtuoso
             style={{ flex: 1 }}
-            data={logsWithoutAccountId}
+            data={uniqueLogsWithoutAccountId}
             endReached={loadMoreLeftLogs}
             overscan={200}
             itemContent={(index, logItem) => (
@@ -267,7 +292,7 @@ export const Logs = ({
             }}
             atTopStateChange={(atTop) => onLeftAtTopChange(atTop)}
           />
-          {logsWithoutAccountId.length === 0 && !isLeftLoading && (
+          {uniqueLogsWithoutAccountId.length === 0 && !isLeftLoading && (
             <div style={{ textAlign: "center", padding: "20px" }}>
               Нет логов без accountId.
             </div>
@@ -283,7 +308,7 @@ export const Logs = ({
         >
           <Virtuoso
             style={{ flex: 1 }}
-            data={logsWithAccountId}
+            data={uniqueLogsWithAccountId}
             endReached={loadMoreRightLogs}
             overscan={200}
             itemContent={(index, logItem) => (
@@ -295,7 +320,7 @@ export const Logs = ({
             atTopStateChange={(atTop) => onRightAtTopChange(atTop)}
           />
 
-          {logsWithAccountId.length === 0 && !isRightLoading && (
+          {uniqueLogsWithAccountId.length === 0 && !isRightLoading && (
             <div style={{ textAlign: "center", padding: "20px" }}>
               Нет логов с accountId.
             </div>
