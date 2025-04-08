@@ -19,11 +19,11 @@ export const DB = async (): Promise<Db> => {
   try {
     const client = new MongoClient(
       String(
-        "mongodb://gen_user:35B%3DR9GTC%5Cq.Xv@82.97.255.185:27017/core?authSource=admin&directConnection=true"
+        "mongodb://gen_user:35B%3DR9GTC%5Cq.Xv@82.97.255.185:27017/core_logs?authSource=admin&directConnection=true"
       )
     );
     const connect = await client.connect();
-    db = connect.db("logs");
+    db = connect.db("core_logs");
     connectionTimestamp = Date.now();
 
     return db;

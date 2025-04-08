@@ -15,8 +15,8 @@ export const getLogs = async (
   skip = 0,
   limit = 100,
   withAccountId: boolean,
-  levels?: string[], // Изменено на массив
-  accountId?: string // Новый параметр для accountId
+  levels?: string[],
+  accountId?: string
 ) => {
   const logsCollection = await getLogsCollection();
 
